@@ -1,5 +1,6 @@
 import NavigationBar from "@/components/navigation-bar";
-import { ClerkProvider } from "@clerk/nextjs";
+import NotAuthenticated from "@/components/not-authenticated";
+import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
@@ -24,7 +25,12 @@ export default function RootLayout({
       <html lang="en">
         <body className={`${geistSans.variable} antialiased`}>
           <NavigationBar />
-          <main>{children}</main>
+          <SignedIn>
+            <main>{children}</main>
+          </SignedIn>
+          <SignedOut>
+            <NotAuthenticated />
+          </SignedOut>
         </body>
       </html>
     </ClerkProvider>
