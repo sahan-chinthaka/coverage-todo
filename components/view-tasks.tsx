@@ -37,7 +37,7 @@ async function ViewTasks({
         <h3 className="text-lg font-semibold text-foreground mb-2">{onlyDeleted ? "Trash is empty" : "No tasks yet"}</h3>
         <p className="text-muted-foreground max-w-sm mx-auto">
           {onlyDeleted
-            ? "No deleted tasks found. Deleted tasks will appear here temporarily."
+            ? "No deleted tasks found. Deleted tasks will appear here for 30 days before being permanently removed."
             : taskStatusFilter === "completed"
             ? "You haven't completed any tasks yet. Keep working!"
             : taskStatusFilter === "incomplete"
@@ -63,6 +63,7 @@ async function ViewTasks({
             description={task.description ?? undefined}
             showDeleteButton={showDeleteButton}
             isDeleted={onlyDeleted}
+            deletedAt={task.deletedAt}
           />
         </div>
       ))}

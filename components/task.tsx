@@ -13,6 +13,7 @@ function Task({
   description,
   showDeleteButton = true,
   isDeleted = false,
+  deletedAt,
 }: {
   id: string;
   title: string;
@@ -20,6 +21,7 @@ function Task({
   completed: boolean;
   showDeleteButton?: boolean;
   isDeleted?: boolean;
+  deletedAt?: Date | null;
 }) {
   const [isPending, startTransition] = useTransition();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -93,9 +95,37 @@ function Task({
             </p>
           )}
           {isDeleted && (
-            <span className="inline-block mt-2 text-xs text-muted-foreground/60 bg-muted px-2 py-1 rounded">
-              {completed ? "Completed" : "Incomplete"} • Deleted
-            </span>
+            <div className="mt-2 space-y-1">
+              <span className="inline-block text-xs text-muted-foreground/60 bg-muted px-2 py-1 rounded">
+                {completed ? "Completed" : "Incomplete"} • Deleted
+              </span>
+              {deletedAt && (
+                <div className="text-xs text-muted-foreground/70">
+                  {(() => {
+                    const now = new Date();
+                    const deleteDate = new Date(deletedAt);
+                    const permanentDeleteDate = new Date(deleteDate.getTime() + 30 * 24 * 60 * 60 * 1000);
+                    const daysLeft = Math.ceil((permanentDeleteDate.getTime() - now.getTime()) / (24 * 60 * 60 * 1000));
+
+                    if (daysLeft <= 0) {
+                      return <span className="text-red-500 font-medium">⚠️ Will be permanently deleted soon</span>;
+                    } else if (daysLeft <= 3) {
+                      return (
+                        <span className="text-orange-500 font-medium">
+                          ⚠️ {daysLeft} day{daysLeft === 1 ? "" : "s"} left until permanent deletion
+                        </span>
+                      );
+                    } else {
+                      return (
+                        <span>
+                          🗑️ {daysLeft} day{daysLeft === 1 ? "" : "s"} left until permanent deletion
+                        </span>
+                      );
+                    }
+                  })()}
+                </div>
+              )}
+            </div>
           )}
         </div>
 

@@ -1,5 +1,5 @@
 import ViewTasks from "@/components/view-tasks";
-import { ChevronLeft } from "lucide-react";
+import { AlertTriangle, ChevronLeft } from "lucide-react";
 import Link from "next/link";
 
 export default function TrashPage() {
@@ -19,7 +19,21 @@ export default function TrashPage() {
           <h1 className="text-4xl font-bold mb-3 bg-gradient-to-r from-red-500 to-red-400 bg-clip-text text-transparent">
             Trash
           </h1>
-          <p className="text-muted-foreground text-lg">Deleted tasks are stored here temporarily</p>
+          <p className="text-muted-foreground text-lg mb-4">Deleted tasks are stored here temporarily</p>
+          <div className="bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/50 rounded-lg p-4 max-w-2xl mx-auto">
+            <div className="flex items-start gap-3">
+              <div className="text-amber-600 dark:text-amber-400 mt-0.5">
+                <AlertTriangle className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="text-sm font-medium text-amber-800 dark:text-amber-200 mb-1">Automatic deletion policy</h3>
+                <p className="text-sm text-amber-700 dark:text-amber-300">
+                  Tasks in trash will be permanently deleted after <strong>30 days</strong>. You can restore them anytime before
+                  then, or delete them permanently yourself.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div>
