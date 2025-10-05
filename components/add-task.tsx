@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { addTask } from "@/server/actions/task";
+import { AlertCircle, Plus } from "lucide-react";
 import * as React from "react";
 import { useState } from "react";
 
@@ -48,30 +49,58 @@ function AddTask({ onAdd }: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full mx-auto max-w-xl p-4 bg-transparent">
-      <div className="mb-3">
-        <label className="block text-sm font-medium mb-1">Title</label>
-        <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Enter task title" />
-      </div>
+    <div className="w-full mx-auto max-w-2xl">
+      <div className="bg-card border border-border rounded-xl p-6 shadow-sm">
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <label className="block text-sm font-semibold text-foreground mb-2">Task Title</label>
+            <Input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="What needs to be done?"
+              className="text-base"
+            />
+          </div>
 
-      <div className="mb-3">
-        <label className="block text-sm font-medium mb-1">Description</label>
-        <Textarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          placeholder="Optional description"
-          rows={4}
-        />
-      </div>
+          <div>
+            <label className="block text-sm font-semibold text-foreground mb-2">
+              Description
+              <span className="font-normal text-muted-foreground ml-1">(optional)</span>
+            </label>
+            <Textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Add any additional details..."
+              rows={3}
+              className="text-base resize-none"
+            />
+          </div>
 
-      {error && <p className="text-sm text-destructive mb-2">{error}</p>}
+          {error && (
+            <div className="flex items-center gap-2 p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
+              <AlertCircle className="w-4 h-4 text-destructive flex-shrink-0" />
+              <p className="text-sm text-destructive">{error}</p>
+            </div>
+          )}
 
-      <div className="flex items-center gap-3">
-        <Button type="submit" disabled={loading}>
-          {loading ? "Saving..." : "Add task"}
-        </Button>
+          <div className="flex items-center justify-end pt-2">
+            <Button type="submit" disabled={loading} className="px-8 py-2.5 font-semibold">
+              {loading ? (
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
+                  Adding...
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <Plus className="w-4 h-4" />
+                  Add Task
+                </div>
+              )}
+            </Button>
+          </div>
+        </form>
       </div>
-    </form>
+    </div>
   );
 }
 
