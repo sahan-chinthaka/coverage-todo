@@ -123,3 +123,34 @@ export async function toggleTaskComplete(id: string) {
     return { error: (error as Error).message, done: false };
   }
 }
+
+export async function cleanupOldDeletedTasks() {
+  try {
+    // Calculate the date 30 days ago
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+    // Find and delete tasks that were deleted more than 30 days ago
+    const deletedTasks = await prisma.task.deleteMany({
+      where: {
+        deletedAt: {
+          not: null,
+          lt: thirtyDaysAgo,
+        },
+      },
+    });
+
+    console.log(`Cleanup completed: ${deletedTasks.count} tasks permanently deleted`);
+    return {
+      done: true,
+      deletedCount: deletedTasks.count,
+      message: `Successfully deleted ${deletedTasks.count} old tasks`,
+    };
+  } catch (error) {
+    console.error("Cleanup failed:", error);
+    return {
+      error: (error as Error).message,
+      done: false,
+    };
+  }
+}
