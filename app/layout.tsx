@@ -1,3 +1,4 @@
+import NavigationBar from "@/components/navigation-bar";
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
@@ -21,7 +22,10 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={`${geistSans.variable} antialiased`}>{children}</body>
+        <body className={`${geistSans.variable} antialiased`}>
+          <NavigationBar />
+          <main>{children}</main>
+        </body>
       </html>
     </ClerkProvider>
   );
